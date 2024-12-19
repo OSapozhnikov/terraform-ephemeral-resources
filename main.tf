@@ -1,27 +1,38 @@
 ####################################################################################################
-# ECS
+# Providers
 ####################################################################################################
-module "sast_ecs" {
-  source                 = "./modules/vpc-module"
-  project                = var.project_name
-  env                    = var.environment_name
-  use_ipam_pool          = true
-  ipv4_netmask_length    = 24
-  aws_availability_zones = ["a", "b"] # You can use approach with 2 or 3 AZs
 
-  tags = local.tags
+provider "aws" {
+  region  = "eu-central-1"
+  profile = "wa-lections"
 }
 
 ####################################################################################################
-# ECS
+# Common resources
 ####################################################################################################
-module "sast_ecs" {
-  source  = "./modules/ecs-module"
-  project = var.project_name
-  env     = var.environment_name
+module "common_resources" {
+  source = "./modules/common-resources"
+  db_password = var.db_password
+}
 
-  create_aplication_load_balancer = true
-  alb_mode                        = "both"
+resource "local_file" "common_password" {
+  content  = module.common_resources.common_password
+  filename = "files/common_password.txt"
+}
 
-  tags = local.tags
+####################################################################################################
+# Ephemeral resources
+####################################################################################################
+module "ephemeral_resources" {
+  source = "./modules/ephemeral-resources"
+  api_key = var.api_key
+}
+
+provider "gitlab" {
+  base_url = "https://gitlab.quarkops.com"
+  token    = module.ephemeral_resources.ephemeral_gitlab_key
+}
+
+module "gitlab-group" {
+  source = "./modules/gitlab-group"
 }
