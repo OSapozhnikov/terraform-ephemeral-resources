@@ -13,6 +13,19 @@ terraform apply -var api_key="G76ef9DXhk9Hz2VJ" "terraform.tfplan"
 terraform plan -var db_password="G76ef9DXhk9Hz2VJ" -var api_key="G76ef9DXhk9Hz2VJ" -out "terraform.tfplan" -destroy
 terraform apply -var api_key="G76ef9DXhk9Hz2VJ" "terraform.tfplan"
 ```
+### Ephemeral Resources: flow
+<img title="Ephemeral Resources: flow" alt="flow" src="./img/flow.png">
+
+### Ephemeral Resources: references
+<img title="Ephemeral Resources: references" alt="references" src="./img/references.png">
+
+### Ephemeral Resources: meta-arguments
+<img title="Ephemeral Resources: meta-arguments" alt="meta-arguments" src="./img/arguments.png">
+
+
+
+
+
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
